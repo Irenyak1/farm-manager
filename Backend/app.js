@@ -9,16 +9,13 @@ const cors = require("cors");
 const mysql = require("mysql");
 var db = require("./db/db");
 
-// var indexRouter = require("./src/routes/index");
-// var usersRouter = require("./src/routes/users");
-// var emplyeesRouter = require("./src/routes/employees");
-
 //Creating an app using the express module
 const app = express();
 app.use(parser.json());
 app.use(cors());
 
-app.get("/data", function(req, res) {
+// Routes for users
+app.get("/users", function(req, res) {
   var sql = "SELECT * FROM users";
   db.query(sql, (err, result) => {
     if (err) throw err;
@@ -27,7 +24,7 @@ app.get("/data", function(req, res) {
   });
 });
 
-app.post("/data", function(req, res) {
+app.post("/users", function(req, res) {
   console.log(req.body);
   var data = {
     name: req.body.name,
@@ -38,14 +35,111 @@ app.post("/data", function(req, res) {
   var sql = "INSERT INTO users SET ?";
   db.query(sql, data, (err, result) => {
     if (err) throw err;
-    console.log(result);
+    // console.log(result);
+    console.log("User captured!");
     res.send({
-      status: "Data has been captured!",
+      status: "Success!",
       id: null,
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone,
       password: req.body.password
+    });
+  });
+});
+
+//Routes for payroll
+app.get("/payroll", function(req, res) {
+  var sql = "SELECT * FROM payroll";
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+app.post("/payroll", function(req, res) {
+  console.log(req.body);
+  var data = {
+    date: req.body.date,
+    name: req.body.name,
+    gender: req.body.gender,
+    position: req.body.position,
+    status: req.body.status,
+    paymode: req.body.paymode,
+    salaryamnt: req.body.salaryamnt,
+    paye: req.body.paye,
+    nssf1: req.body.nssf1,
+    nssf2: req.body.nssf2,
+    tax: req.body.tax,
+    lst: req.body.lst,
+    advance: req.body.advance,
+    netpay: req.body.netpay,
+    total: req.body.total
+  };
+  var sql = "INSERT INTO payroll SET ?";
+  db.query(sql, data, (err, result) => {
+    if (err) throw err;
+    // console.log(result);
+    console.log("Payroll captured!");
+    res.send({
+      status: "Success!",
+      id: null,
+      date: req.body.date,
+      name: req.body.name,
+      gender: req.body.gender,
+      position: req.body.position,
+      status: req.body.status,
+      paymode: req.body.paymode,
+      salaryamnt: req.body.salaryamnt,
+      paye: req.body.paye,
+      nssf1: req.body.nssf1,
+      nssf2: req.body.nssf2,
+      tax: req.body.tax,
+      lst: req.body.lst,
+      advance: req.body.advance,
+      netpay: req.body.netpay,
+      total: req.body.total
+    });
+  });
+});
+
+//Routes for advances
+app.get("/advances", function(req, res) {
+  var sql = "SELECT * FROM advance";
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+  });
+});
+
+app.post("/advances", function(req, res) {
+  console.log(req.body);
+  var data = {
+    date: req.body.date,
+    name: req.body.name,
+    gender: req.body.gender,
+    position: req.body.position,
+    status: req.body.status,
+    advanceamnt: req.body.advanceamnt,
+    description: req.body.description
+  };
+  var sql = "INSERT INTO advance SET ?";
+  db.query(sql, data, (err, result) => {
+    if (err) throw err;
+    // console.log(result);
+    console.log("Advance captured!");
+    res.send({
+      status: "Success!",
+      id: null,
+      date: req.body.date,
+      name: req.body.name,
+      gender: req.body.gender,
+      position: req.body.position,
+      status: req.body.status,
+      advanceamnt: req.body.advanceamnt,
+      description: req.body.description
     });
   });
 });

@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   TouchableHighlight
 } from "react-native";
-
+import moment from "moment";
 var t = require("tcomb-form-native");
 const Form = t.form.Form;
 
@@ -119,9 +119,47 @@ export default class Advance extends Component {
     super();
     this.state = {};
   }
-  handleSubmit = event => {
+  InsertDataToServer = () => {
+    fetch("http://0391f5f2.ngrok.io/advances", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        date: this.Date,
+        name: this.Name,
+        gender: this.Gender,
+        position: this.Position,
+        status: this.Status,
+        advanceamnt: this.AdvancedAmount,
+        description: this.Description
+      })
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log("Advance captured", responseJson);
+        alert("Success!");
+        // this.props.navigation.navigate("Login");
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  handleSubmit = () => {
     const value = this._form.getValue();
-    console.log("value: ", value);
+    console.log(value);
+    if (value != null) {
+      (this.Date = value.Date),
+        (this.Name = value.Name),
+        (this.Gender = value.Gender),
+        (this.Position = value.Position),
+        (this.Status = value.Status),
+        (this.AdvancedAmount = value.AdvancedAmount),
+        (this.Description = value.Description),
+        this.InsertDataToServer();
+    }
   };
 
   render() {

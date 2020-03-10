@@ -15,10 +15,10 @@ const Email = t.refinement(t.String, Email => {
   const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/; //or any other regexp
   return reg.test(Email);
 });
-const Phone = t.refinement(t.Number, Phone => {
-  const reg = /^[0]?[0-9]\d{9}$/;
-  return reg.test(Phone);
-});
+// const Phone = t.refinement(t.Number, Phone => {
+//   const reg = /^[0]?[1-9]\d{9}$/;
+//   return reg.test(Phone);
+// });
 const Name = t.refinement(t.String, Name => {
   const regex = /^[a-zA-Z].*[\s\.]*$/g;
   return regex.test(Name);
@@ -27,7 +27,7 @@ const Name = t.refinement(t.String, Name => {
 const User = t.struct({
   Name: Name,
   Email: Email,
-  Phone: Phone,
+  Phone: t.Number,
   Password: t.String
 });
 
@@ -89,11 +89,11 @@ export default class SignUp extends Component {
   }
 
   // componentDidMount() {
-  //   this.refs._form.getComponent("Name").refs.input.focus();
+  //   // this.refs._form.getComponent("Name").refs.input.focus();
   // }
 
-  InsertDataToServer = async () => {
-    fetch("http://ac23113a.ngrok.io/data", {
+  InsertDataToServer = () => {
+    fetch("http://0391f5f2.ngrok.io/users", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -106,35 +106,11 @@ export default class SignUp extends Component {
         password: this.Password
       })
     })
-      // .then(response => {
-      //   if (
-      //     response.statusText == "OK" &&
-      //     response.status >= 200 &&
-      //     response.status < 300
-      //   ) {
-      //     return response.json();
-      //   } else {
-      //     throw new Error("Server can't be reached!");
-      //   }
-      // })
-      // .then(json => {
-      //   alert("Thank You for Signing Up!");
-      //   this.props.navigation.navigate("Login");
-      //   console.log("hooray! we have json!");
-      //   console.log(json);
-      // })
-      // .catch(error => {
-      //   console.log("error fetching data");
-      //   console.log(error);
-      //   console.log(error.message); // Server can't be reached!
-      //   this.setState({ server_error: "request failed try again." });
-      // });
-
       .then(response => response.json())
       .then(responseJson => {
-        // alert("Thank You for Signing Up!");
-        Alert.alert(responseJson);
-        this.props.navigation.navigate("Login");
+        console.log("signup succes", responseJson);
+        alert("Success!");
+        // this.props.navigation.navigate("Login");
       })
       .catch(error => {
         console.error(error);
@@ -200,7 +176,6 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   link: {
-    // fontWeight: "bold",
     color: "#650205",
     textAlign: "center",
     marginTop: 8,
@@ -210,5 +185,3 @@ const styles = StyleSheet.create({
     marginTop: 20
   }
 });
-
-// export default SignUp;

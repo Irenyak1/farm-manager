@@ -41,6 +41,7 @@ const Form = t.form.Form;
 // })
 
 const User = t.struct({
+  Date: t.Date,
   Name: t.String,
   Quantity: t.Number,
   QuantityUsed: t.Number,
@@ -74,6 +75,14 @@ const formStyles = {
 
 const options = {
   fields: {
+    Date: {
+      mode: "date",
+      error: "Please select date",
+      config: {
+        defaultValueText: "Select",
+        format: date => moment(date).format("DD-MM-YYYY")
+      }
+    },
     Name: {
       error: "Please enter a correct Name"
     },

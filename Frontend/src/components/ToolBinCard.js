@@ -138,6 +138,45 @@ export default class ToolBinCard extends Component {
       image: null
     };
   }
+
+  // InsertDataToServer = () => {
+  //   fetch("https://0d823e54.ngrok.io/data", {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify({
+  //       name: this.Name,
+  //       email: this.Email,
+  //       phone: this.Phone,
+  //       password: this.Password
+  //     })
+  //   })
+
+  //     .then(response => response.json())
+  //     .then(responseJson => {
+  //       console.log("signup succes", responseJson);
+  //       alert("Success!");
+  //       // this.props.navigation.navigate("Login");
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     });
+  // };
+
+  // handleSubmit = () => {
+  //   const value = this._form.getValue();
+  //   console.log(value);
+  //   if (value != null) {
+  //     (this.Name = value.Name),
+  //       (this.Email = value.Email),
+  //       (this.Phone = value.Phone),
+  //       (this.Password = value.Password),
+  //       this.InsertDataToServer();
+  //   }
+  // };
+
   handleSubmit = () => {
     const value = this._form.getValue();
     console.log("value: ", value);

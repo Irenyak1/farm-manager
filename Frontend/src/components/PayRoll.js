@@ -10,7 +10,7 @@ import {
   TouchableHighlight
 } from "react-native";
 import moment from "moment";
-import ImageFactory from "react-native-image-picker-form";
+// import ImageFactory from "react-native-image-picker-form";
 // import ImagePicker from 'react-native-image-crop-picker';
 // import ImagePicker from 'react-native-image-picker';
 
@@ -49,7 +49,7 @@ var Tax = t.enums({
 });
 
 const Payroll = t.struct({
-  ...Form.User,
+  ...Form.Payroll,
   Date: t.Date,
   Name: Name,
   Gender: Gender,
@@ -64,7 +64,7 @@ const Payroll = t.struct({
   LST: t.maybe(t.Number),
   Advance: t.maybe(t.Number),
   NetPay: t.Number,
-  PaySlip: t.maybe(t.String),
+  // PaySlip: t.maybe(t.String),
   Total: t.Number
 });
 
@@ -100,7 +100,7 @@ const options = {
       returnKeyType: "next",
       config: {
         defaultValueText: "Select",
-        format: date => moment(date).format("DD-MM-YYYY")
+        format: date => moment(date).format("YYYY-MM-DD")
       }
     },
     Name: {
@@ -172,18 +172,18 @@ const options = {
       error: "Net pay is missing",
       returnKeyType: "next"
     },
-    PaySlip: {
-      label: "Pay Slip",
-      returnKeyType: "next",
-      config: {
-        title: "Select Pay Slip Image",
-        options: ["Open camera", "Select from gallery", "Cancel"],
-        style: {
-          titleFontFamily: "Roboto"
-        }
-      },
-      factory: ImageFactory
-    },
+    // PaySlip: {
+    //   label: "Pay Slip",
+    //   returnKeyType: "next",
+    //   config: {
+    //     title: "Select Pay Slip Image",
+    //     options: ["Open camera", "Select from gallery", "Cancel"],
+    //     style: {
+    //       titleFontFamily: "Roboto"
+    //     }
+    //   },
+    //   factory: ImageFactory
+    // },
     Total: {
       label: "Total",
       error: "Total is missing"
@@ -195,12 +195,65 @@ const options = {
 export default class PayRoll extends Component {
   constructor() {
     super();
-
     this.state = {};
   }
-  handleSubmit = event => {
+  InsertDataToServer = () => {
+    fetch("http://0391f5f2.ngrok.io/payroll", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        date: this.Date,
+        name: this.Name,
+        gender: this.Gender,
+        position: this.Position,
+        status: this.Status,
+        paymode: this.PaymentMode,
+        salaryamnt: this.SalaryAmount,
+        paye: this.PAYE,
+        nssf1: this.NSSF1,
+        nssf2: this.NSSF2,
+        tax: this.Tax,
+        lst: this.LST,
+        advance: this.Advance,
+        netpay: this.NetPay,
+        total: this.Total
+      })
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log("Advance captured", responseJson);
+        alert("Success!");
+        // this.props.navigation.navigate("Login");
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  handleSubmit = () => {
     const value = this._form.getValue();
-    console.log("value: ", value);
+    console.log(value);
+    if (value != null) {
+      (this.Date = value.Date),
+        (this.Name = value.Name),
+        (this.Gender = value.Gender),
+        (this.Position = value.Position),
+        (this.Status = value.Status),
+        (this.PaymentMode = value.PaymentMode),
+        (this.SalaryAmount = value.SalaryAmount),
+        (this.PAYE = value.PAYE),
+        (this.NSSF1 = value.NSSF1),
+        (this.NSSF2 = value.NSSF2),
+        (this.Tax = value.Tax),
+        (this.LST = value.LST),
+        (this.Advance = value.Advance),
+        (this.NetPay = value.NetPay),
+        (this.Total = value.Total),
+        this.InsertDataToServer();
+    }
   };
 
   render() {
